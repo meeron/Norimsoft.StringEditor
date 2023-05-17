@@ -66,4 +66,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Norimsoft.StringEditor\Norimsoft.StringEditor.csproj" />
+    </ItemGroup>
+
 </Project>
