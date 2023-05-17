@@ -1,0 +1,1 @@
+# Norimsoft.StringEditor
