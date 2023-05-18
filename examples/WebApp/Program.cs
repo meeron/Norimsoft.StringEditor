@@ -1,11 +1,15 @@
 using Norimsoft.StringEditor;
+using Norimsoft.StringEditor.DataProvider.SqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddStringEditor();
+builder.Services.AddStringEditor(o =>
+{
+    o.UseSqlServer("<connectionString>");
+});
 
 var app = builder.Build();
 
