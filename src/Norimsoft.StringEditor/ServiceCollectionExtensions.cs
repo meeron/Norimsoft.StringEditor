@@ -17,6 +17,13 @@ public static class ServiceCollectionExtensions
             services.AddSingleton(stringEditorOptions.DataProviderOptions);
         }
 
+        if (stringEditorOptions.MigrationProviderImplType != null)
+        {
+            services.AddTransient(
+                typeof(IMigrationProvider),
+                stringEditorOptions.MigrationProviderImplType);
+        }
+
         switch (stringEditorOptions.DataProviderLifetime)
         {
             case ServiceLifetime.Singleton:

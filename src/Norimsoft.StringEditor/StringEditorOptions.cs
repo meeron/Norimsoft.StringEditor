@@ -16,9 +16,17 @@ public class StringEditorOptions
         DataProviderOptions = options;
     }
 
+    public void UseMigrationProvider<TMigrationProvider>()
+        where TMigrationProvider : IMigrationProvider
+    {
+        MigrationProviderImplType = typeof(TMigrationProvider);
+    }
+
     public ServiceLifetime DataProviderLifetime { get; set; } = ServiceLifetime.Scoped;
     
     internal Type? DataProviderImplType { get; private set; }
+    
+    internal Type? MigrationProviderImplType { get; private set; }
     
     internal IDataProviderOptions? DataProviderOptions { get; private set; }
 }
