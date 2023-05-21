@@ -7,4 +7,6 @@ public class StringEditorConfiguration
     }
     
     public string Path { get; set; } = "/strings";
+
+    public bool RunMigration { get; set; } = true;
 }

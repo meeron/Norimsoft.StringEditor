@@ -37,6 +37,8 @@ public static class ApplicationBuilderExtensions
             return new { env, app };
         });
         
+        if (!config.RunMigration) return;
+        
         using var scope = app.Services.CreateScope();
         var migrationProvider = scope.ServiceProvider.GetService<IMigrationProvider>();
 
