@@ -67,6 +67,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\Norimsoft.StringEditor.DataProvider.SqlServer\Norimsoft.StringEditor.DataProvider.SqlServer.csproj" />
       <ProjectReference Include="..\..\src\Norimsoft.StringEditor\Norimsoft.StringEditor.csproj" />
     </ItemGroup>
 

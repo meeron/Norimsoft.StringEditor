@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norimsoft.StringEditor.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1E81ED27-6656-43C4-BB6E-074AB9A7AC79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norimsoft.StringEditor.DataProvider.SqlServer", "src\Norimsoft.StringEditor.DataProvider.SqlServer\Norimsoft.StringEditor.DataProvider.SqlServer.csproj", "{DC47CE04-31FD-4129-B15A-E5EE74258FB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,7 @@ Global
 		{5D649DF3-C010-4B5F-AE02-682ADA7E9CF5} = {A3B0D0C9-DEA1-4BAD-9EE7-338E355D557D}
 		{F5E5AEC0-B5AE-4FC3-B373-CE427E32EEB3} = {3EF315F1-4EB1-4FFF-8600-5C31783F0F19}
 		{A284118B-97B3-48D5-BC4F-81DA8F977428} = {1E81ED27-6656-43C4-BB6E-074AB9A7AC79}
+		{DC47CE04-31FD-4129-B15A-E5EE74258FB7} = {1E81ED27-6656-43C4-BB6E-074AB9A7AC79}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A284118B-97B3-48D5-BC4F-81DA8F977428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -41,5 +44,9 @@ Global
 		{F5E5AEC0-B5AE-4FC3-B373-CE427E32EEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5E5AEC0-B5AE-4FC3-B373-CE427E32EEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5E5AEC0-B5AE-4FC3-B373-CE427E32EEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC47CE04-31FD-4129-B15A-E5EE74258FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC47CE04-31FD-4129-B15A-E5EE74258FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC47CE04-31FD-4129-B15A-E5EE74258FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC47CE04-31FD-4129-B15A-E5EE74258FB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
