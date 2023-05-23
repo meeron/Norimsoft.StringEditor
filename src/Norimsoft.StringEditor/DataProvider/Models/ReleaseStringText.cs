@@ -1,8 +1,8 @@
 namespace Norimsoft.StringEditor.DataProvider.Models;
 
-public class StringDeployment
+public class ReleaseStringText
 {
-    public int EnvironmentFk { get; set; }
+    public int ReleaseFk { get; set; }
     
     public int StringTextFk { get; set; }
 }
