@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Norimsoft.StringEditor.DataProvider;
-using Norimsoft.StringEditor.Helpers;
+using Norimsoft.StringEditor.Endpoints;
+using Norimsoft.StringEditor.Endpoints.Api;
 
 namespace Norimsoft.StringEditor;
 
@@ -22,20 +21,12 @@ public static class ApplicationBuilderExtensions
 
     private static void UseStringEditorRoot(WebApplication app, StringEditorConfiguration config)
     {
-        app.MapGet(config.Path, () =>
-        {
-            var dataStream = EmbeddedHelpers.GetResource("index.html");
+        var mainGroup = app.MapGroup(config.Path);
+        mainGroup.MapGet("", HomeEndpoint.Handler);
+        mainGroup.MapGet("{env}/{appName}", GetStringsEndpoint.Handler);
 
-            return dataStream != null
-                ? Results.File(dataStream, "text/html")
-                : Results.NotFound();
-        });
-
-        // Map public endpoint used by third party to fetch translations
-        app.MapGet($"{config.Path}/{{env}}/{{appName}}", (string env, string appName) =>
-        {
-            return new { env, app };
-        });
+        var apiV1Group = mainGroup.MapGroup("api/v1");
+        apiV1Group.MapGet("apps", GetAppsEndpoint.Handler);
         
         if (!config.RunMigration) return;
         
