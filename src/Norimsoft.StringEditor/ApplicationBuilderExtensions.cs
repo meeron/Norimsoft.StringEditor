@@ -27,6 +27,9 @@ public static class ApplicationBuilderExtensions
 
         var apiV1Group = mainGroup.MapGroup("api/v1");
         apiV1Group.MapGet("apps", GetAppsEndpoint.Handler);
+        apiV1Group.MapPost("apps", CreateAppEndpoint.Handler);
+        apiV1Group.MapDelete("apps/{id:int}", DeleteAppEndpoint.Handler);
+        apiV1Group.MapPut("apps/{id:int}", UpdateAppEndpoint.Handler);
         
         if (!config.RunMigration) return;
         

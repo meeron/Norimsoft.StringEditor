@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Norimsoft.StringEditor.DataProvider;
+using Slugify;
 
 namespace Norimsoft.StringEditor;
 
@@ -44,5 +45,7 @@ public static class ServiceCollectionExtensions
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
+        services.AddSingleton<ISlugHelper, SlugHelper>();
     }
 }

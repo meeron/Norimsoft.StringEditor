@@ -22,7 +22,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStringEditor();
+app.UseStringEditor(config =>
+{
+    // Use it if you don't want to run migration at startup
+    config.RunMigration = false;
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -2,9 +2,13 @@
 
 namespace Norimsoft.StringEditor.Endpoints.Api;
 
-internal static class GetAppsEndpoint
+internal static class DeleteAppEndpoint
 {
     internal static async Task<IResult> Handler(
+        int id,
         [FromServices] IStringEditorDataProvider dataProvider) =>
-        Results.Ok(await dataProvider.GetApps(CancellationToken.None));
+        Results.Ok(new
+        {
+            Count = await dataProvider.DeleteApp(id, CancellationToken.None),
+        });
 }
