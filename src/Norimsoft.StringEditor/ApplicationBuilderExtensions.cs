@@ -23,6 +23,8 @@ public static class ApplicationBuilderExtensions
     {
         var mainGroup = app.MapGroup(config.Path);
         mainGroup.MapGet("", HomeEndpoint.Handler);
+        app.Use(StaticResources.CreateMiddleware(config));
+        
         mainGroup.MapGet("{env}/{appName}", GetStringsEndpoint.Handler);
 
         var apiV1Group = mainGroup.MapGroup("api/v1");
