@@ -3,6 +3,11 @@ import solidPlugin from 'vite-plugin-solid';
 
 export default defineConfig({
   base: '/strings',
+  resolve: {
+    alias: {
+      '@': './src',
+    },
+  },
   plugins: [solidPlugin()],
   server: {
     port: 3000,
