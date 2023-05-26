@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Norimsoft.StringEditor.DataProvider;
 using Norimsoft.StringEditor.Endpoints;
 using Norimsoft.StringEditor.Endpoints.Api;
+using Norimsoft.StringEditor.Middlewares;
 
 namespace Norimsoft.StringEditor;
 
@@ -21,10 +22,11 @@ public static class ApplicationBuilderExtensions
 
     private static void UseStringEditorRoot(WebApplication app, StringEditorConfiguration config)
     {
+        app.UseMiddleware<StringEditorConfigurationMiddleware>(config);
+        app.UseMiddleware<StaticResourcesMiddleware>();
+
         var mainGroup = app.MapGroup(config.Path);
         mainGroup.MapGet("", HomeEndpoint.Handler);
-        app.Use(StaticResources.CreateMiddleware(config));
-        
         mainGroup.MapGet("{env}/{appName}", GetStringsEndpoint.Handler);
 
         var apiV1Group = mainGroup.MapGroup("api/v1");
@@ -33,6 +35,11 @@ public static class ApplicationBuilderExtensions
         apiV1Group.MapDelete("apps/{id:int}", DeleteAppEndpoint.Handler);
         apiV1Group.MapPut("apps/{id:int}", UpdateAppEndpoint.Handler);
         
+        RunMigrationIfRequired(app, config);
+    }
+
+    private static void RunMigrationIfRequired(WebApplication app, StringEditorConfiguration config)
+    {
         if (!config.RunMigration) return;
         
         using var scope = app.Services.CreateScope();
@@ -40,4 +47,5 @@ public static class ApplicationBuilderExtensions
 
         migrationProvider?.Migrate().Wait();
     }
+    
 }
