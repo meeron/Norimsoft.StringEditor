@@ -1,15 +1,13 @@
-﻿import { Nav } from 'solid-bootstrap';
-import { createEffect, createResource, createSignal, For } from 'solid-js';
+﻿import { Nav, Spinner } from 'solid-bootstrap';
+import { createResource, For, Show} from 'solid-js';
 import { getApps } from '../../resources/fetchers';
 import NewAppNavItem from './NewAppNavItem';
 import { createApp } from '../../resources/mutate';
 import { useAlerts } from '../alert';
 
 export default function Sidebar() {
-  const [loadState, setLoadState] = createSignal(0);
   const [_, { error }] = useAlerts();
   const [apps, { refetch }] = createResource(
-    loadState,
     getApps((err) => error(err.message)),
   );
 
@@ -25,6 +23,11 @@ export default function Sidebar() {
       </a>
       <hr></hr>
       <Nav variant="pills" class="flex-column mb-auto">
+        <Show when={apps.loading}>
+          <Nav.Item class="d-flex justify-content-center">
+            <Spinner animation="border" variant="primary" />
+          </Nav.Item>
+        </Show>
         <For each={apps()}>
           {(app) => (
             <Nav.Item>

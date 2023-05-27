@@ -2,6 +2,7 @@
 import { createStore } from 'solid-js/store';
 
 export type AlertItem = {
+  id: number;
   variant: 'danger' | 'success';
   text: string;
 };
@@ -23,7 +24,15 @@ const AlertsContext = createContext<ContextValue>([
 export const AlertsProvider: ParentComponent = (props) => {
   const [state, setState] = createStore<AlertItem[]>([]);
 
-  const error = (text: string) => setState([...state, { variant: 'danger', text }]);
+  const error = (text: string) => {
+    const id = Date.now();
+    
+    setState([...state, { id, variant: 'danger', text }]);
+    
+    setTimeout(() => {
+      setState(state.filter(s => s.id !== id));
+    }, 5000);
+  }
 
   return <AlertsContext.Provider value={[state, { error }]}>{props.children}</AlertsContext.Provider>;
 };
