@@ -1,0 +1,9 @@
+﻿.container {
+  right: 20px;
+  top: 20px;
+  position: absolute;
+}
+
+.alert {
+  text-align: right;
+}

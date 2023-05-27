@@ -1,11 +1,17 @@
 ﻿import { Nav } from 'solid-bootstrap';
-import { createResource, For } from 'solid-js';
+import { createEffect, createResource, createSignal, For } from 'solid-js';
 import { getApps } from '../../resources/fetchers';
 import NewAppNavItem from './NewAppNavItem';
 import { createApp } from '../../resources/mutate';
+import { useAlerts } from '../alert';
 
 export default function Sidebar() {
-  const [apps, { refetch }] = createResource(getApps);
+  const [loadState, setLoadState] = createSignal(0);
+  const [_, { error }] = useAlerts();
+  const [apps, { refetch }] = createResource(
+    loadState,
+    getApps((err) => error(err.message)),
+  );
 
   const addNewApp = async (name: string) => {
     await createApp(name);
