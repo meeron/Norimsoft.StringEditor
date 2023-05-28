@@ -14,7 +14,8 @@ export default function NewAppNavItem(props: Props) {
     }
 
     if (e.code === 'Enter' && inputRef?.value) {
-      props.onSave(inputRef.value).then(() => setIsEditing(false));
+      void props.onEnter(inputRef.value);
+      setIsEditing(false)
       return;
     }
   };
@@ -41,5 +42,5 @@ export default function NewAppNavItem(props: Props) {
 }
 
 type Props = {
-  onSave: (name: string) => Promise<void>;
+  onEnter: (name: string) => void;
 };
