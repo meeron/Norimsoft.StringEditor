@@ -1,5 +1,7 @@
 ﻿import { Nav, Spinner } from 'solid-bootstrap';
 import { createSignal, createEffect, For, Show } from 'solid-js';
+import { A } from '@solidjs/router';
+
 import { getApps } from '../../resources/fetchers';
 import NewAppNavItem from './NewAppNavItem';
 import { createApp } from '../../resources/mutate';
@@ -32,9 +34,7 @@ export default function Sidebar() {
         <For each={apps()}>
           {(app) => (
             <Nav.Item>
-              <Nav.Link eventKey={app.slug} class='text-white'>
-                {app.displayText}
-              </Nav.Link>
+              <A href={`/strings/${app.slug}`} class='text-white nav-link'>{app.displayText}</A>
             </Nav.Item>
           )}
         </For>
@@ -48,9 +48,7 @@ export default function Sidebar() {
         </Show>
         <hr></hr>
         <Nav.Item>
-          <Nav.Link eventKey='languages' class='text-white'>
-            Languages
-          </Nav.Link>
+          <A href='/strings/languages' class='text-white nav-link'>Languages</A>
         </Nav.Item>
       </Nav>
     </div>
