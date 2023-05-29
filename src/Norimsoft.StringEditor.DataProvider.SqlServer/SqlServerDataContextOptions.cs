@@ -1,6 +1,6 @@
 namespace Norimsoft.StringEditor.DataProvider.SqlServer;
 
-public class SqlServerDataProviderOptions : IDataProviderOptions
+public class SqlServerDataProviderOptions : IDataContextOptions
 {
     public SqlServerDataProviderOptions(string connectionString)
     {

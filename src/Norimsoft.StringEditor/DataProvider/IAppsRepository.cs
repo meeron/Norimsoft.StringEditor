@@ -1,8 +1,8 @@
-using Norimsoft.StringEditor.DataProvider.Models;
+﻿using Norimsoft.StringEditor.DataProvider.Models;
 
 namespace Norimsoft.StringEditor.DataProvider;
 
-public interface IStringEditorDataProvider : IDisposable
+public interface IAppsRepository
 {
     Task<IReadOnlyCollection<App>> GetApps(CancellationToken ct);
     

@@ -7,7 +7,7 @@ public static class StringEditorOptionsExtensions
 
     public static void UseSqlServer(this StringEditorOptions options, SqlServerDataProviderOptions dataProviderOptions)
     {
-        options.UseDataProvider<SqlServerDataProvider>(dataProviderOptions);
+        options.UseDataProvider<SqlServerDataContext>(dataProviderOptions);
         options.UseMigrationProvider<SqlServerMigrationProvider>();
     }
 }

@@ -1,5 +1,5 @@
 namespace Norimsoft.StringEditor.DataProvider;
 
-public interface IDataProviderOptions
+public interface IDataContextOptions
 {
 }

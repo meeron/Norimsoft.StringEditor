@@ -8,9 +8,9 @@ internal static class UpdateAppEndpoint
     internal static async Task<IResult> Handler(
         [FromRoute] int id,
         [FromBody] UpdateAppBody? body,
-        [FromServices] IStringEditorDataProvider dataProvider)
+        [FromServices] IDataContext dataContext)
     {
-        var app = await dataProvider.GetApp(id, CancellationToken.None);
+        var app = await dataContext.Apps.GetApp(id, CancellationToken.None);
         if (app == null)
         {
             return Results.UnprocessableEntity(new
@@ -29,7 +29,7 @@ internal static class UpdateAppEndpoint
             app.DisplayText = body.DisplayText;
         }
 
-        if (await dataProvider.UpdateApp(app, CancellationToken.None) == 0)
+        if (await dataContext.Apps.UpdateApp(app, CancellationToken.None) == 0)
         {
             return Results.UnprocessableEntity(new
             {
@@ -37,6 +37,6 @@ internal static class UpdateAppEndpoint
             });
         }
 
-        return Results.Ok(await dataProvider.GetApp(app.Id, CancellationToken.None));
+        return Results.Ok(await dataContext.Apps.GetApp(app.Id, CancellationToken.None));
     }
 }

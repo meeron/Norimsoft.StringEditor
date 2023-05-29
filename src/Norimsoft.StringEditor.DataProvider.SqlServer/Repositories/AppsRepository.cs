@@ -1,17 +1,18 @@
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using Norimsoft.StringEditor.DataProvider.Models;
 
-namespace Norimsoft.StringEditor.DataProvider.SqlServer;
+namespace Norimsoft.StringEditor.DataProvider.SqlServer.Repositories;
 
-public class SqlServerDataProvider : IStringEditorDataProvider
+internal class AppsRepository : IAppsRepository
 {
+    private readonly SqlConnection _connection;
     private readonly SqlServerDataProviderOptions _options;
-    private SqlConnection? _connection;
 
-    public SqlServerDataProvider(IDataProviderOptions options)
+    internal AppsRepository(SqlConnection connection, SqlServerDataProviderOptions options)
     {
-        _options = (SqlServerDataProviderOptions)options;
+        _connection = connection;
+        _options = options;
     }
 
     public async Task<IReadOnlyCollection<App>> GetApps(CancellationToken ct)
@@ -20,7 +21,7 @@ public class SqlServerDataProvider : IStringEditorDataProvider
 
         var cmd = new SqlCommand($"select Id, Slug, DisplayText from {_options.Schema}.Apps")
         {
-            Connection = await Connection(),
+            Connection = _connection,
             CommandTimeout = _options.CommandTimeout,
         };
         await using var reader = await cmd.ExecuteReaderAsync(ct);
@@ -42,7 +43,7 @@ public class SqlServerDataProvider : IStringEditorDataProvider
     {
         var cmd = new SqlCommand($"select Id, Slug, DisplayText from {_options.Schema}.Apps where Id = @Id")
         {
-            Connection = await Connection(),
+            Connection = _connection,
             CommandTimeout = _options.CommandTimeout,
         };
         var idParam = cmd.Parameters.Add("@Id", SqlDbType.Int);
@@ -66,7 +67,7 @@ insert into {_options.Schema}.Apps (Slug, DisplayText) values (@Slug, @DisplayTe
 select @@IDENTITY
 ")
         {
-            Connection = await Connection(),
+            Connection = _connection,
             CommandTimeout = _options.CommandTimeout,
         };
         var slugParam = cmd.Parameters.Add("@Slug", SqlDbType.NVarChar, 50);
@@ -84,7 +85,7 @@ select @@IDENTITY
     {
         var cmd = new SqlCommand($"delete from {_options.Schema}.Apps where Id = @Id")
         {
-            Connection = await Connection(),
+            Connection = _connection,
             CommandTimeout = _options.CommandTimeout,
         };
         var idParam = cmd.Parameters.Add("@Id", SqlDbType.Int);
@@ -101,7 +102,7 @@ update {_options.Schema}.Apps set
     DisplayText = @DisplayText
 where Id = @Id and (Slug <> @Slug or DisplayText <> @DisplayText)")
         {
-            Connection = await Connection(),
+            Connection = _connection,
             CommandTimeout = _options.CommandTimeout,
         };
         var idParam = cmd.Parameters.Add("@Id", SqlDbType.Int);
@@ -114,21 +115,5 @@ where Id = @Id and (Slug <> @Slug or DisplayText <> @DisplayText)")
         displayTextParam.Value = app.DisplayText;
 
         return await cmd.ExecuteNonQueryAsync();
-    }
-
-    public void Dispose()
-    {
-        _connection?.Close();
-        _connection?.Dispose();
-    }
-
-    private async Task<SqlConnection> Connection()
-    {
-        if (_connection != null) return _connection;
-        
-        _connection = new SqlConnection(_options.ConnectionString);
-        await _connection.OpenAsync();
-
-        return _connection;
     }
 }

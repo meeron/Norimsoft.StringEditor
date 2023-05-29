@@ -11,11 +11,11 @@ public static class ServiceCollectionExtensions
         var stringEditorOptions = new StringEditorOptions();
         configure(stringEditorOptions);
         
-        ArgumentNullException.ThrowIfNull(stringEditorOptions.DataProviderImplType);
+        ArgumentNullException.ThrowIfNull(stringEditorOptions.DataContextImplType);
 
-        if (stringEditorOptions.DataProviderOptions != null)
+        if (stringEditorOptions.DataContextOptions != null)
         {
-            services.AddSingleton(stringEditorOptions.DataProviderOptions);
+            services.AddSingleton(stringEditorOptions.DataContextOptions);
         }
 
         if (stringEditorOptions.MigrationProviderImplType != null)
@@ -29,18 +29,18 @@ public static class ServiceCollectionExtensions
         {
             case ServiceLifetime.Singleton:
                 services.AddSingleton(
-                    typeof(IStringEditorDataProvider),
-                    stringEditorOptions.DataProviderImplType);
+                    typeof(IDataContext),
+                    stringEditorOptions.DataContextImplType);
                 break;
             case ServiceLifetime.Scoped:
                 services.AddScoped(
-                    typeof(IStringEditorDataProvider),
-                    stringEditorOptions.DataProviderImplType);
+                    typeof(IDataContext),
+                    stringEditorOptions.DataContextImplType);
                 break;
             case ServiceLifetime.Transient:
                 services.AddTransient(
-                    typeof(IStringEditorDataProvider),
-                    stringEditorOptions.DataProviderImplType);
+                    typeof(IDataContext),
+                    stringEditorOptions.DataContextImplType);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

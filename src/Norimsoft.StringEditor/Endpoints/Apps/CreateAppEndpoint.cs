@@ -9,7 +9,7 @@ internal static class CreateAppEndpoint
 {
     internal static async Task<IResult> Handler(
         [FromBody] CreateAppBody? body,
-        [FromServices] IStringEditorDataProvider dataProvider,
+        [FromServices] IDataContext dataContext,
         [FromServices] ISlugHelper slugHelper)
     {
         if (string.IsNullOrWhiteSpace(body?.DisplayText))
@@ -23,7 +23,7 @@ internal static class CreateAppEndpoint
             DisplayText = body.DisplayText,
         };
 
-        newApp = await dataProvider.InsertApp(newApp, CancellationToken.None);
+        newApp = await dataContext.Apps.InsertApp(newApp, CancellationToken.None);
 
         return Results.Created($"/apps/{newApp.Id}", newApp);
     }

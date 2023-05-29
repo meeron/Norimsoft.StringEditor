@@ -13,7 +13,7 @@ public class SqlServerMigrationProvider : IMigrationProvider
     private readonly ILogger<SqlServerMigrationProvider> _logger;
 
     public SqlServerMigrationProvider(
-        IDataProviderOptions options,
+        IDataContextOptions options,
         ILogger<SqlServerMigrationProvider> logger)
     {
         _logger = logger;

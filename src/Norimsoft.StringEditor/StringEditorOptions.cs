@@ -9,11 +9,11 @@ public class StringEditorOptions
     {
     }
 
-    public void UseDataProvider<TDataProvider>(IDataProviderOptions? options = null)
-        where TDataProvider : IStringEditorDataProvider
+    public void UseDataProvider<TDataContext>(IDataContextOptions? options = null)
+        where TDataContext : IDataContext
     {
-        DataProviderImplType = typeof(TDataProvider);
-        DataProviderOptions = options;
+        DataContextImplType = typeof(TDataContext);
+        DataContextOptions = options;
     }
 
     public void UseMigrationProvider<TMigrationProvider>()
@@ -24,9 +24,9 @@ public class StringEditorOptions
 
     public ServiceLifetime DataProviderLifetime { get; set; } = ServiceLifetime.Scoped;
     
-    internal Type? DataProviderImplType { get; private set; }
+    internal Type? DataContextImplType { get; private set; }
     
     internal Type? MigrationProviderImplType { get; private set; }
     
-    internal IDataProviderOptions? DataProviderOptions { get; private set; }
+    internal IDataContextOptions? DataContextOptions { get; private set; }
 }
