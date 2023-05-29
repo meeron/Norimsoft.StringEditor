@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Norimsoft.StringEditor.DataProvider;
 using Norimsoft.StringEditor.Endpoints;
 using Norimsoft.StringEditor.Endpoints.Apps;
+using Norimsoft.StringEditor.Endpoints.Languages;
 using Norimsoft.StringEditor.Middlewares;
 
 namespace Norimsoft.StringEditor;
@@ -30,6 +31,7 @@ public static class ApplicationBuilderExtensions
         mainGroup.MapGet("{env}/{appName}", GetStringsEndpoint.Handler);
 
         mainGroup.MapAppsEndpoints();
+        mainGroup.MapLanguagesEndpoints();
         
         RunMigrationIfRequired(app, config);
     }
