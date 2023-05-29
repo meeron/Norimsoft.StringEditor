@@ -1,9 +1,9 @@
 ﻿using Norimsoft.StringEditor.DataProvider;
 using Norimsoft.StringEditor.DataProvider.Models;
-using Norimsoft.StringEditor.Endpoints.Api.Models;
+using Norimsoft.StringEditor.Endpoints.Apps.Models;
 using Slugify;
 
-namespace Norimsoft.StringEditor.Endpoints.Api;
+namespace Norimsoft.StringEditor.Endpoints.Apps;
 
 internal static class CreateAppEndpoint
 {

@@ -1,6 +1,6 @@
 ﻿using Norimsoft.StringEditor.DataProvider;
 
-namespace Norimsoft.StringEditor.Endpoints.Api;
+namespace Norimsoft.StringEditor.Endpoints.Apps;
 
 internal static class DeleteAppEndpoint
 {

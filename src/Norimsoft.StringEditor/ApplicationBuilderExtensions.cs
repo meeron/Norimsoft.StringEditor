@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Norimsoft.StringEditor.DataProvider;
 using Norimsoft.StringEditor.Endpoints;
-using Norimsoft.StringEditor.Endpoints.Api;
+using Norimsoft.StringEditor.Endpoints.Apps;
 using Norimsoft.StringEditor.Middlewares;
 
 namespace Norimsoft.StringEditor;
@@ -29,11 +29,7 @@ public static class ApplicationBuilderExtensions
         mainGroup.MapGet("", HomeEndpoint.Handler);
         mainGroup.MapGet("{env}/{appName}", GetStringsEndpoint.Handler);
 
-        var apiV1Group = mainGroup.MapGroup("api/v1");
-        apiV1Group.MapGet("apps", GetAppsEndpoint.Handler);
-        apiV1Group.MapPost("apps", CreateAppEndpoint.Handler);
-        apiV1Group.MapDelete("apps/{id:int}", DeleteAppEndpoint.Handler);
-        apiV1Group.MapPut("apps/{id:int}", UpdateAppEndpoint.Handler);
+        mainGroup.MapAppsEndpoints();
         
         RunMigrationIfRequired(app, config);
     }

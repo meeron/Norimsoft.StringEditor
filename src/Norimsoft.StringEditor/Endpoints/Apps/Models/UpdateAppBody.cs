@@ -1,4 +1,4 @@
-﻿namespace Norimsoft.StringEditor.Endpoints.Api.Models;
+﻿namespace Norimsoft.StringEditor.Endpoints.Apps.Models;
 
 public class UpdateAppBody
 {
