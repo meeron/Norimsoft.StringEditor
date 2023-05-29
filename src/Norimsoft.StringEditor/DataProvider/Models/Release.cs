@@ -1,9 +1,7 @@
 namespace Norimsoft.StringEditor.DataProvider.Models;
 
-public class Release
+public class Release : Entity
 {
-    public int Id { get; set; }
-
     public string Version { get; set; } = "";
     
     public DateTime CreatedAtUtc { get; set; }

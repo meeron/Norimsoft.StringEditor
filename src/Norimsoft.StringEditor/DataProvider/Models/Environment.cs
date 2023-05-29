@@ -1,9 +1,7 @@
 namespace Norimsoft.StringEditor.DataProvider.Models;
 
-public class Environment
+public class Environment : Entity
 {
-    public int Id { get; set; }
-    
     public int AppFk { get; set; }
 
     public string Slug { get; set; } = "";

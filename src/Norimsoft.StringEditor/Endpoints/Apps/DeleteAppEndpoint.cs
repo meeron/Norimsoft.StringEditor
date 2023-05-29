@@ -9,6 +9,6 @@ internal static class DeleteAppEndpoint
         [FromServices] IDataContext dataContext) =>
         Results.Ok(new
         {
-            Count = await dataContext.Apps.DeleteApp(id, CancellationToken.None),
+            Count = await dataContext.Apps.Delete(id, CancellationToken.None),
         });
 }

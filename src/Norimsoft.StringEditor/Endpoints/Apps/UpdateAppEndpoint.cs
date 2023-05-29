@@ -10,7 +10,7 @@ internal static class UpdateAppEndpoint
         [FromBody] UpdateAppBody? body,
         [FromServices] IDataContext dataContext)
     {
-        var app = await dataContext.Apps.GetApp(id, CancellationToken.None);
+        var app = await dataContext.Apps.Get(id, CancellationToken.None);
         if (app == null)
         {
             return Results.UnprocessableEntity(new
@@ -29,7 +29,7 @@ internal static class UpdateAppEndpoint
             app.DisplayText = body.DisplayText;
         }
 
-        if (await dataContext.Apps.UpdateApp(app, CancellationToken.None) == 0)
+        if (await dataContext.Apps.Update(app, CancellationToken.None) == 0)
         {
             return Results.UnprocessableEntity(new
             {
@@ -37,6 +37,6 @@ internal static class UpdateAppEndpoint
             });
         }
 
-        return Results.Ok(await dataContext.Apps.GetApp(app.Id, CancellationToken.None));
+        return Results.Ok(await dataContext.Apps.Get(app.Id, CancellationToken.None));
     }
 }

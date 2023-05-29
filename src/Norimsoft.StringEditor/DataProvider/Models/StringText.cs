@@ -1,9 +1,7 @@
 namespace Norimsoft.StringEditor.DataProvider.Models;
 
-public class StringText
+public class StringText : Entity
 {
-    public int Id { get; set; }
-    
     public int StringKeyFk { get; set; }
     
     public int LanguageFk { get; set; }

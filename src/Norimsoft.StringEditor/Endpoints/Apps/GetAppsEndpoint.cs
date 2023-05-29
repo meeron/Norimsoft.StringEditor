@@ -6,5 +6,5 @@ internal static class GetAppsEndpoint
 {
     internal static async Task<IResult> Handler(
         [FromServices] IDataContext dataContext) =>
-        Results.Ok(await dataContext.Apps.GetApps(CancellationToken.None));
+        Results.Ok(await dataContext.Apps.Get(CancellationToken.None));
 }

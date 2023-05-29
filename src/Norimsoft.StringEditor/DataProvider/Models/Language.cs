@@ -1,9 +1,7 @@
 namespace Norimsoft.StringEditor.DataProvider.Models;
 
-public class Language
+public class Language : Entity
 {
-    public int Id { get; set; }
-
     public string Code { get; set; } = "";
 
     public string EnglishName { get; set; } = "";

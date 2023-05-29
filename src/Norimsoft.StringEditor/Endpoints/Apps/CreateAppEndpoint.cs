@@ -23,7 +23,7 @@ internal static class CreateAppEndpoint
             DisplayText = body.DisplayText,
         };
 
-        newApp = await dataContext.Apps.InsertApp(newApp, CancellationToken.None);
+        newApp = await dataContext.Apps.Insert(newApp, CancellationToken.None);
 
         return Results.Created($"/apps/{newApp.Id}", newApp);
     }

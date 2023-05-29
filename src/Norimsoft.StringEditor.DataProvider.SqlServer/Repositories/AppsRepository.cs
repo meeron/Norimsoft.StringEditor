@@ -4,7 +4,7 @@ using Norimsoft.StringEditor.DataProvider.Models;
 
 namespace Norimsoft.StringEditor.DataProvider.SqlServer.Repositories;
 
-internal class AppsRepository : IAppsRepository
+internal class AppsRepository : IRepository<App>
 {
     private readonly SqlConnection _connection;
     private readonly SqlServerDataProviderOptions _options;
@@ -15,7 +15,7 @@ internal class AppsRepository : IAppsRepository
         _options = options;
     }
 
-    public async Task<IReadOnlyCollection<App>> GetApps(CancellationToken ct)
+    public async Task<IReadOnlyCollection<App>> Get(CancellationToken ct)
     {
         var result = new List<App>();
 
@@ -39,7 +39,7 @@ internal class AppsRepository : IAppsRepository
         return result;
     }
 
-    public async Task<App?> GetApp(int id, CancellationToken ct)
+    public async Task<App?> Get(int id, CancellationToken ct)
     {
         var cmd = new SqlCommand($"select Id, Slug, DisplayText from {_options.Schema}.Apps where Id = @Id")
         {
@@ -60,7 +60,7 @@ internal class AppsRepository : IAppsRepository
         };
     }
 
-    public async Task<App> InsertApp(App newApp, CancellationToken ct)
+    public async Task<App> Insert(App newApp, CancellationToken ct)
     {
         var cmd = new SqlCommand($@"
 insert into {_options.Schema}.Apps (Slug, DisplayText) values (@Slug, @DisplayText)
@@ -78,10 +78,10 @@ select @@IDENTITY
 
         var newId = Convert.ToInt32(await cmd.ExecuteScalarAsync(ct));
 
-        return (await GetApp(newId, ct))!;
+        return (await Get(newId, ct))!;
     }
 
-    public async Task<int> DeleteApp(int id, CancellationToken ct)
+    public async Task<int> Delete(int id, CancellationToken ct)
     {
         var cmd = new SqlCommand($"delete from {_options.Schema}.Apps where Id = @Id")
         {
@@ -94,7 +94,7 @@ select @@IDENTITY
         return await cmd.ExecuteNonQueryAsync();
     }
 
-    public async Task<int> UpdateApp(App app, CancellationToken ct)
+    public async Task<int> Update(App app, CancellationToken ct)
     {
         var cmd = new SqlCommand($@"
 update {_options.Schema}.Apps set
