@@ -13,10 +13,7 @@ internal static class UpdateAppEndpoint
         var app = await dataContext.Apps.Get(id, CancellationToken.None);
         if (app == null)
         {
-            return Results.UnprocessableEntity(new
-            {
-                Code = "NotFound",
-            });
+            return Results.UnprocessableEntity(new ErrorCodeResult("NotFound"));
         }
 
         if (!string.IsNullOrWhiteSpace(body?.Slug))
@@ -31,10 +28,7 @@ internal static class UpdateAppEndpoint
 
         if (await dataContext.Apps.Update(app, CancellationToken.None) == 0)
         {
-            return Results.UnprocessableEntity(new
-            {
-                Code = "NoChange",
-            });
+            return Results.UnprocessableEntity(new ErrorCodeResult("NoChange"));
         }
 
         return Results.Ok(await dataContext.Apps.Get(app.Id, CancellationToken.None));

@@ -7,8 +7,5 @@ internal static class DeleteAppEndpoint
     internal static async Task<IResult> Handler(
         int id,
         [FromServices] IDataContext dataContext) =>
-        Results.Ok(new
-        {
-            Count = await dataContext.Apps.Delete(id, CancellationToken.None),
-        });
+        Results.Ok(new DeletedResult(await dataContext.Apps.Delete(id, CancellationToken.None)));
 }
