@@ -1,11 +1,36 @@
-﻿namespace Norimsoft.StringEditor.Endpoints.Languages;
+﻿using Norimsoft.StringEditor.DataProvider;
+using Norimsoft.StringEditor.Endpoints.Languages.Models;
+
+namespace Norimsoft.StringEditor.Endpoints.Languages;
 
 internal static class UpdateLanguageEndpoint
 {
-    internal static async Task<IResult> Handler()
+    internal static async Task<IResult> Handler(
+        int id,
+        [FromBody] UpdateLanguageBody body,
+        [FromServices] IDataContext dataContext)
     {
-        await Task.CompletedTask;
+        var entity = await dataContext.Languages.Get(id, CancellationToken.None);
+        if (entity == null)
+        {
+            return Results.UnprocessableEntity(new ErrorCodeResult("NotFound"));
+        }
 
-        return Results.Ok();
+        if (!string.IsNullOrWhiteSpace(body.EnglishName))
+        {
+            entity.EnglishName = body.EnglishName;
+        }
+        
+        if (!string.IsNullOrWhiteSpace(body.NativeName))
+        {
+            entity.NativeName = body.NativeName;
+        }
+
+        if (await dataContext.Languages.Update(entity, CancellationToken.None) == 0)
+        {
+            return Results.UnprocessableEntity(new ErrorCodeResult("NoChange"));
+        }
+
+        return Results.Ok(await dataContext.Languages.Get(id, CancellationToken.None));
     }
 }

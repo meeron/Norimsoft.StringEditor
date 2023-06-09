@@ -11,7 +11,7 @@ internal static class LanguagesEndpointsBuilder
 
         group.MapGet("", GetLanguagesEndpoint.Handler);
         group.MapPost("", CreateLanguageEndpoint.Handler);
-        group.MapPut("", UpdateLanguageEndpoint.Handler);
-        group.MapDelete("", DeleteLanguageEndpoint.Handler);
+        group.MapPut("{id:int}", UpdateLanguageEndpoint.Handler);
+        group.MapDelete("{id:int}", DeleteLanguageEndpoint.Handler);
     }
 }

@@ -1,11 +1,14 @@
-﻿namespace Norimsoft.StringEditor.Endpoints.Languages;
+﻿using Norimsoft.StringEditor.DataProvider;
+
+namespace Norimsoft.StringEditor.Endpoints.Languages;
 
 internal static class GetLanguagesEndpoint
 {
-    internal static async Task<IResult> Handler()
+    internal static async Task<IResult> Handler(
+        [FromServices] IDataContext dataContext)
     {
-        await Task.CompletedTask;
+        var entities = await dataContext.Languages.Get(CancellationToken.None);
 
-        return Results.Ok();
+        return Results.Ok(entities);
     }
 }
