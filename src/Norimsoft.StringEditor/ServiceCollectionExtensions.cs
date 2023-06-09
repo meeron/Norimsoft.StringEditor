@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Norimsoft.StringEditor.DataProvider;
 using Slugify;
 
@@ -47,5 +48,6 @@ public static class ServiceCollectionExtensions
         }
 
         services.AddSingleton<ISlugHelper, SlugHelper>();
+        services.AddValidatorsFromAssemblyContaining<ErrorCodeResult>();
     }
 }

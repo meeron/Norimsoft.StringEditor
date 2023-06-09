@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Norimsoft.StringEditor.DataProvider.Models;
 using Norimsoft.StringEditor.Endpoints.Languages;
@@ -9,6 +10,13 @@ namespace Norimsoft.StringEditor.Tests.Languages;
 
 public class CreateLanguageEndpointTests : LanguagesEndpointTests
 {
+    private readonly IValidator<CreateLanguageBody> _validator;
+
+    public CreateLanguageEndpointTests()
+    {
+        _validator = new CreateLanguageBody.Validator();
+    }
+    
     [Fact]
     public async Task CodeIsEmpty_ShouldReturnBadRequestResult()
     {
@@ -16,12 +24,12 @@ public class CreateLanguageEndpointTests : LanguagesEndpointTests
         var body = new CreateLanguageBody();
         
         // Act
-        var result = await CreateLanguageEndpoint.Handler(body, MockDbContext);
+        var result = await CreateLanguageEndpoint.Handler(body, MockDbContext, _validator);
         var badRequest = result as BadRequest<ErrorResult>;
         
         // Assert
         badRequest.ShouldNotBeNull();
-        badRequest.Value?.Message.ShouldBe("'code' is required");
+        badRequest.Value?.Message.ShouldBe("'Code' must not be empty.");
     }
     
     [Fact]
@@ -34,12 +42,12 @@ public class CreateLanguageEndpointTests : LanguagesEndpointTests
         };
         
         // Act
-        var result = await CreateLanguageEndpoint.Handler(body, MockDbContext);
+        var result = await CreateLanguageEndpoint.Handler(body, MockDbContext, _validator);
         var badRequest = result as BadRequest<ErrorResult>;
         
         // Assert
         badRequest.ShouldNotBeNull();
-        badRequest.Value?.Message.ShouldBe("'englishName' is required");
+        badRequest.Value?.Message.ShouldBe("'English Name' must not be empty.");
     }
     
     [Fact]
@@ -53,12 +61,12 @@ public class CreateLanguageEndpointTests : LanguagesEndpointTests
         };
         
         // Act
-        var result = await CreateLanguageEndpoint.Handler(body, MockDbContext);
+        var result = await CreateLanguageEndpoint.Handler(body, MockDbContext, _validator);
         var badRequest = result as BadRequest<ErrorResult>;
         
         // Assert
         badRequest.ShouldNotBeNull();
-        badRequest.Value?.Message.ShouldBe("'nativeName' is required");
+        badRequest.Value?.Message.ShouldBe("'Native Name' must not be empty.");
     }
     
     [Fact]
@@ -78,7 +86,7 @@ public class CreateLanguageEndpointTests : LanguagesEndpointTests
             .Returns(new Language { Id = 1 });
         
         // Act
-        var result = await CreateLanguageEndpoint.Handler(body, MockDbContext);
+        var result = await CreateLanguageEndpoint.Handler(body, MockDbContext, _validator);
         var created = result as Created<Language>;
         
         // Assert

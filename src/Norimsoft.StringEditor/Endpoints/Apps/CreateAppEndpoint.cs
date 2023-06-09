@@ -1,6 +1,8 @@
-﻿using Norimsoft.StringEditor.DataProvider;
+﻿using FluentValidation;
+using Norimsoft.StringEditor.DataProvider;
 using Norimsoft.StringEditor.DataProvider.Models;
 using Norimsoft.StringEditor.Endpoints.Apps.Models;
+using Norimsoft.StringEditor.Extensions;
 using Slugify;
 
 namespace Norimsoft.StringEditor.Endpoints.Apps;
@@ -8,13 +10,15 @@ namespace Norimsoft.StringEditor.Endpoints.Apps;
 internal static class CreateAppEndpoint
 {
     internal static async Task<IResult> Handler(
-        [FromBody] CreateAppBody? body,
+        [FromBody] CreateAppBody body,
+        [FromServices] IValidator<CreateAppBody> validator,
         [FromServices] IDataContext dataContext,
         [FromServices] ISlugHelper slugHelper)
     {
-        if (string.IsNullOrWhiteSpace(body?.DisplayText))
+        var validationResult = await validator.ValidateAsync(body);
+        if (!validationResult.IsValid)
         {
-            return ErrorResults.BadRequest("'displayText' is required");
+            return validationResult.AsBadRequestResult();
         }
 
         var newApp = new App

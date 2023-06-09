@@ -22,14 +22,15 @@ public class CreateAppEndpointTests : AppEndpointTests
     {
         // Arrange
         var body = new CreateAppBody();
+        var validator = new CreateAppBody.Validator();
         
         // Act
-        var result = await CreateAppEndpoint.Handler(body, MockDbContext, _mockSlugHelper);
+        var result = await CreateAppEndpoint.Handler(body, validator, MockDbContext, _mockSlugHelper);
         var badRequest = result as BadRequest<ErrorResult>;
         
         // Assert
         badRequest.ShouldNotBeNull();
-        badRequest.Value?.Message.ShouldBe("'displayText' is required");
+        badRequest.Value?.Message.ShouldBe("'Display Text' must not be empty.");
     }
     
     [Fact]
@@ -39,6 +40,7 @@ public class CreateAppEndpointTests : AppEndpointTests
         const string displayText = "obi-wan kenobi";
         const string slug = "slug";
         
+        var validator = new CreateAppBody.Validator();
         var body = new CreateAppBody
         {
             DisplayText = displayText,
@@ -50,7 +52,7 @@ public class CreateAppEndpointTests : AppEndpointTests
             .Returns(new App { Id = 1 });
         
         // Act
-        var result = await CreateAppEndpoint.Handler(body, MockDbContext, _mockSlugHelper);
+        var result = await CreateAppEndpoint.Handler(body, validator, MockDbContext, _mockSlugHelper);
         var created = result as Created<App>;
         
         // Assert
