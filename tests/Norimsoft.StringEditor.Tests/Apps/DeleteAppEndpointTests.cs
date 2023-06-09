@@ -22,5 +22,7 @@ public class DeleteAppEndpointTests : AppEndpointTests
         // Assert
         ok.ShouldNotBeNull();
         ok.Value?.Count.ShouldBe(1);
+        
+        await MockAppRepository.Received(1).Delete(id, CancellationToken.None);
     }
 }
