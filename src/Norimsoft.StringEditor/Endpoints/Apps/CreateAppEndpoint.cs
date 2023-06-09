@@ -14,7 +14,7 @@ internal static class CreateAppEndpoint
     {
         if (string.IsNullOrWhiteSpace(body?.DisplayText))
         {
-            return Results.BadRequest(new ErrorResult("'displayText' is required"));
+            return ErrorResults.BadRequest("'displayText' is required");
         }
 
         var newApp = new App

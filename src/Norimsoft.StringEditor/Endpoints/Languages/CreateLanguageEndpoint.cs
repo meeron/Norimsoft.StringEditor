@@ -12,17 +12,17 @@ internal static class CreateLanguageEndpoint
     {
         if (string.IsNullOrWhiteSpace(body?.Code))
         {
-            return Results.BadRequest(new ErrorResult("'code' is required"));
+            return ErrorResults.BadRequest("'code' is required");
         }
         
         if (string.IsNullOrWhiteSpace(body.EnglishName))
         {
-            return Results.BadRequest(new ErrorResult("'englishName' is required"));
+            return ErrorResults.BadRequest("'englishName' is required");
         }
         
         if (string.IsNullOrWhiteSpace(body.NativeName))
         {
-            return Results.BadRequest(new ErrorResult("'nativeName' is required"));
+            return ErrorResults.BadRequest("'nativeName' is required");
         }
 
         var newLang = await dataContext.Languages.Insert(new Language

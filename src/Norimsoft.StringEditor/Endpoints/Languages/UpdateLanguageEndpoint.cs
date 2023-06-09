@@ -13,7 +13,7 @@ internal static class UpdateLanguageEndpoint
         var entity = await dataContext.Languages.Get(id, CancellationToken.None);
         if (entity == null)
         {
-            return Results.UnprocessableEntity(new ErrorCodeResult("NotFound"));
+            return ErrorResults.NotFound();
         }
 
         if (!string.IsNullOrWhiteSpace(body.EnglishName))
@@ -28,7 +28,7 @@ internal static class UpdateLanguageEndpoint
 
         if (await dataContext.Languages.Update(entity, CancellationToken.None) == 0)
         {
-            return Results.UnprocessableEntity(new ErrorCodeResult("NoChange"));
+            return ErrorResults.NoChange();
         }
 
         return Results.Ok(await dataContext.Languages.Get(id, CancellationToken.None));
