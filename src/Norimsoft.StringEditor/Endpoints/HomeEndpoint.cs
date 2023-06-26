@@ -14,17 +14,33 @@ internal static class HomeEndpoint
             return Results.Content(_indexCache, "text/html");
         }
         
-        var dataStream = EmbeddedHelpers.GetResource("index.html");
-        if (dataStream == null)
+        var config = ctx.GetConfig();
+
+        if (!string.IsNullOrWhiteSpace(config.WebRootPath)
+            && Directory.Exists(config.WebRootPath))
         {
-            return Results.NotFound();
+            var indexPath = Path.Join(config.WebRootPath, "index.html");
+        
+            return File.Exists(indexPath)
+                ? StreamResult(File.OpenRead(indexPath), config)
+                : Results.NoContent();
         }
 
-        var config = ctx.GetConfig();
+        var dataStream = EmbeddedHelpers.GetResource("index.html");
+
+        return dataStream != null
+            ? StreamResult(dataStream, config)
+            : Results.NoContent();
+    }
+
+    private static IResult StreamResult(Stream dataStream, StringEditorConfiguration config)
+    {
         using var reader = new StreamReader(dataStream);
 
+        var content = reader.ReadToEnd();
+
         // Replace base path for static files with the current configured one
-        _indexCache = reader.ReadToEnd().Replace("/strings/", $"{config.Path}/");
+        _indexCache = content.Replace("/strings/", $"{config.Path}/");
 
         return Results.Content(_indexCache, "text/html");
     }

@@ -399,3 +399,4 @@ FodyWeavers.xsd
 .idea
 src/Norimsoft.StringEditor/wwwroot
 src/Norimsoft.StringEditor.UI/dist
+.DS_Store
