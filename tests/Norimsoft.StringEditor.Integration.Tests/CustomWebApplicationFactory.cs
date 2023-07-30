@@ -10,7 +10,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<TestProgram>
         await using var sqlConnection = new SqlConnection(Helpers.DbConnectionStringMaster);
         await sqlConnection.OpenAsync();
 
-        var cmd = new SqlCommand("drop database StringEditor_Tests")
+        var cmd = new SqlCommand(@"
+ALTER DATABASE StringEditor_Tests SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+drop database StringEditor_Tests;")
         {
             Connection = sqlConnection,
         };
