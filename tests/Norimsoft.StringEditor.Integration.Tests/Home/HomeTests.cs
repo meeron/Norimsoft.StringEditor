@@ -1,7 +1,3 @@
-using System.Net;
-using Shouldly;
-using Xunit;
-
 namespace Norimsoft.StringEditor.Integration.Tests.Home;
 
 public class HomeTests : IClassFixture<CustomWebApplicationFactory>

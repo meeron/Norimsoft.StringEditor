@@ -3,9 +3,11 @@ using Norimsoft.StringEditor.DataProvider.SqlServer;
 
 var builder = WebApplication.CreateBuilder();
 
+await Helpers.InitDb();
+
 builder.Services.AddStringEditor(o =>
 {
-    o.UseSqlServer("Server=localhost;Database=StringEditor_Tests;User Id=sa;Password=Mn9-hwL8J;");
+    o.UseSqlServer(Helpers.DbConnectionStringData);
 });
 
 var app = builder.Build();

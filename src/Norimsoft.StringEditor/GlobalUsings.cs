@@ -5,3 +5,4 @@ global using MiddlewareHandler = System.Func<Microsoft.AspNetCore.Http.HttpConte
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Norimsoft.StringEditor.Tests")]
+[assembly: InternalsVisibleTo("Norimsoft.StringEditor.Integration.Tests")]
