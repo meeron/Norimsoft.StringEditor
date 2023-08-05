@@ -8,5 +8,6 @@ internal static class Mappers
     internal static void Init(SqlServerDataProviderOptions options)
     {
         ClassMapper.Add<Language>($"{options.Schema}.Languages");
+        ClassMapper.Add<App>($"{options.Schema}.Apps");
     }
 }

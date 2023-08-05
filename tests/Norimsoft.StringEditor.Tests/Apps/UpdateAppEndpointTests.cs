@@ -77,22 +77,4 @@ public class UpdateAppEndpointTests : AppEndpointTests
         // Assert
         ok.ShouldNotBeNull();
     }
-    
-    [Fact]
-    public async Task UpdateFailed_ShouldReturnErrorCodeResult()
-    {
-        // Arrange
-        const int id = 666;
-        var body = new UpdateAppBody();
-        
-        MockAppRepository.Get(id, CancellationToken.None).Returns(new App());
-        
-        // Act
-        var result = await UpdateAppEndpoint.Handler(id, body, MockDbContext);
-        var unprocessableEntity = result as UnprocessableEntity<ErrorCodeResult>;
-        
-        // Assert
-        unprocessableEntity.ShouldNotBeNull();
-        unprocessableEntity.Value?.Code.ShouldBe("NoChange");
-    }
 }

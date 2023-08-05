@@ -1,6 +1,6 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Norimsoft.StringEditor.DataProvider.Models;
+using RepoDb;
 
 namespace Norimsoft.StringEditor.DataProvider.SqlServer.Repositories;
 
@@ -17,103 +17,39 @@ internal class AppsRepository : IRepository<App>
 
     public async Task<IReadOnlyCollection<App>> Get(CancellationToken ct)
     {
-        var result = new List<App>();
-
-        var cmd = new SqlCommand($"select Id, Slug, DisplayText from {_options.Schema}.Apps")
+        var orderBy = new[]
         {
-            Connection = _connection,
-            CommandTimeout = _options.CommandTimeout,
+            OrderField.Ascending<App>(x => x.DisplayText),
         };
-        await using var reader = await cmd.ExecuteReaderAsync(ct);
-
-        while (await reader.ReadAsync(ct))
-        {
-            result.Add(new App
-            {
-                Id = reader.GetInt32(0),
-                Slug = reader.GetString(1),
-                DisplayText = reader.GetString(2),
-            });
-        }
-
-        return result;
+        
+        var items = await _connection.QueryAllAsync<App>(
+            cancellationToken: ct,
+            orderBy: orderBy);
+        
+        return items.ToArray();
     }
 
     public async Task<App?> Get(int id, CancellationToken ct)
     {
-        var cmd = new SqlCommand($"select Id, Slug, DisplayText from {_options.Schema}.Apps where Id = @Id")
-        {
-            Connection = _connection,
-            CommandTimeout = _options.CommandTimeout,
-        };
-        var idParam = cmd.Parameters.Add("@Id", SqlDbType.Int);
-        idParam.Value = id;
-        
-        await using var reader = await cmd.ExecuteReaderAsync(ct);
-        if (!await reader.ReadAsync(ct)) return null;
+        var items = await _connection.QueryAsync<App>(
+            x => x.Id == id,
+            cancellationToken: ct);
 
-        return new App
-        {
-            Id = reader.GetInt32(0),
-            Slug = reader.GetString(1),
-            DisplayText = reader.GetString(2),
-        };
+        return items.SingleOrDefault();
     }
 
     public async Task<App> Insert(App newApp, CancellationToken ct)
     {
-        var cmd = new SqlCommand($@"
-insert into {_options.Schema}.Apps (Slug, DisplayText) values (@Slug, @DisplayText)
-select @@IDENTITY
-")
-        {
-            Connection = _connection,
-            CommandTimeout = _options.CommandTimeout,
-        };
-        var slugParam = cmd.Parameters.Add("@Slug", SqlDbType.NVarChar, 50);
-        slugParam.Value = newApp.Slug;
+        var id = await _connection.InsertAsync(newApp, cancellationToken: ct);
+
+        newApp.Id = (int)id;
         
-        var displayTextParam = cmd.Parameters.Add("@DisplayText", SqlDbType.NVarChar, 50);
-        displayTextParam.Value = newApp.DisplayText;
-
-        var newId = Convert.ToInt32(await cmd.ExecuteScalarAsync(ct));
-
-        return (await Get(newId, ct))!;
+        return newApp;
     }
 
-    public async Task<int> Delete(int id, CancellationToken ct)
-    {
-        var cmd = new SqlCommand($"delete from {_options.Schema}.Apps where Id = @Id")
-        {
-            Connection = _connection,
-            CommandTimeout = _options.CommandTimeout,
-        };
-        var idParam = cmd.Parameters.Add("@Id", SqlDbType.Int);
-        idParam.Value = id;
+    public Task<int> Delete(int id, CancellationToken ct) =>
+        _connection.DeleteAsync<App>(x => x.Id == id, cancellationToken: ct);
 
-        return await cmd.ExecuteNonQueryAsync();
-    }
-
-    public async Task<int> Update(App app, CancellationToken ct)
-    {
-        var cmd = new SqlCommand($@"
-update {_options.Schema}.Apps set
-    Slug = @Slug,
-    DisplayText = @DisplayText
-where Id = @Id and (Slug <> @Slug or DisplayText <> @DisplayText)")
-        {
-            Connection = _connection,
-            CommandTimeout = _options.CommandTimeout,
-        };
-        var idParam = cmd.Parameters.Add("@Id", SqlDbType.Int);
-        idParam.Value = app.Id;
-        
-        var slugParam = cmd.Parameters.Add("@Slug", SqlDbType.NVarChar, 50);
-        slugParam.Value = app.Slug;
-        
-        var displayTextParam = cmd.Parameters.Add("@DisplayText", SqlDbType.NVarChar, 50);
-        displayTextParam.Value = app.DisplayText;
-
-        return await cmd.ExecuteNonQueryAsync();
-    }
+    public Task<int> Update(App app, CancellationToken ct) =>
+        _connection.UpdateAsync(app, x => x.Id == app.Id, cancellationToken: ct);
 }

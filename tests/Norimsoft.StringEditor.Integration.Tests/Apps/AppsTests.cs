@@ -85,29 +85,6 @@ public class AppsTests : IClassFixture<CustomWebApplicationFactory>
     }
     
     [Fact]
-    public async Task UpdateAppEndpoint_AppFound_WithEmptyBody_Should_Return_NoChange()
-    {
-        // Arrange
-        var client = _factory.CreateClient();
-        var body = new UpdateAppBody();
-        
-        // Act
-        var createRes = await client.PostAsJsonAsync("strings/api/v1/apps", new CreateAppBody
-        {
-            DisplayText = "Test"
-        });
-        var app = await createRes.Content.ReadFromJsonAsync<App>();
-        
-        var response = await client.PutAsJsonAsync($"strings/api/v1/apps/{app!.Id}", body);
-        
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
-        
-        var data = await response.Content.ReadFromJsonAsync<ErrorCodeResult>();
-        data!.Code.ShouldBe("NoChange");
-    }
-    
-    [Fact]
     public async Task UpdateAppEndpoint_AppFound_BodyWithSlug_Should_Return_Ok()
     {
         // Arrange

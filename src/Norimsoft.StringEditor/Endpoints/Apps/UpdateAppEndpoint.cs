@@ -26,10 +26,7 @@ internal static class UpdateAppEndpoint
             app.DisplayText = body.DisplayText;
         }
 
-        if (await dataContext.Apps.Update(app, CancellationToken.None) == 0)
-        {
-            return ErrorResults.NoChange();
-        }
+        await dataContext.Apps.Update(app, CancellationToken.None);
 
         return Results.Ok(await dataContext.Apps.Get(app.Id, CancellationToken.None));
     }

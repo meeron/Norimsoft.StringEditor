@@ -25,24 +25,6 @@ public class UpdateLanguageEndpointTests : LanguagesEndpointTests
     }
 
     [Fact]
-    public async Task NothingToUpdate_ShouldReturnErrorCodeResult()
-    {
-        // Arrange
-        const int id = 666;
-        var body = new UpdateLanguageBody();
-
-        MockRepository.Get(id, CancellationToken.None).Returns(new Language());
-        
-        // Act
-        var result = await UpdateLanguageEndpoint.Handler(id, body, MockDbContext);
-        var unprocessableEntity = result as UnprocessableEntity<ErrorCodeResult>;
-        
-        // Assert
-        unprocessableEntity.ShouldNotBeNull();
-        unprocessableEntity.Value?.Code.ShouldBe("NoChange");
-    }
-
-    [Fact]
     public async Task GivenEnglishName_ShouldUpdateAndReturnOk()
     {
         // Arrange
