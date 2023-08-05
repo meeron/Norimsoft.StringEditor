@@ -1,5 +1,5 @@
-using System.Data.SqlClient;
 using System.Reflection;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 
 namespace Norimsoft.StringEditor.DataProvider.SqlServer;

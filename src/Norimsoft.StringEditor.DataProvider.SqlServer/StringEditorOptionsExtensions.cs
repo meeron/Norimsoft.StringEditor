@@ -1,3 +1,8 @@
+using RepoDb;
+using RepoDb.DbHelpers;
+using RepoDb.DbSettings;
+using RepoDb.StatementBuilders;
+
 namespace Norimsoft.StringEditor.DataProvider.SqlServer;
 
 public static class StringEditorOptionsExtensions
@@ -9,5 +14,24 @@ public static class StringEditorOptionsExtensions
     {
         options.UseDataProvider<SqlServerDataContext>(dataProviderOptions);
         options.UseMigrationProvider<SqlServerMigrationProvider>();
+        
+        RepoDbBootstrap();
+        Mappers.Mappers.Init(dataProviderOptions);
+    }
+
+    private static void RepoDbBootstrap()
+    {
+        var dbSetting = new SqlServerDbSetting();
+        
+        GlobalConfiguration
+            .Setup()
+            .UseSqlServer();
+        
+        DbSettingMapper
+            .Add<Microsoft.Data.SqlClient.SqlConnection>(dbSetting, true);
+        DbHelperMapper
+            .Add<Microsoft.Data.SqlClient.SqlConnection>(new SqlServerDbHelper(), true);
+        StatementBuilderMapper
+            .Add<Microsoft.Data.SqlClient.SqlConnection>(new SqlServerStatementBuilder(dbSetting), true);
     }
 }

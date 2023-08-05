@@ -1,5 +1,5 @@
-using System.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.SqlClient;
 
 namespace Norimsoft.StringEditor.Integration.Tests;
 

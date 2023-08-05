@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Norimsoft.StringEditor.DataProvider.Models;
 
 namespace Norimsoft.StringEditor.DataProvider.SqlServer.Repositories;

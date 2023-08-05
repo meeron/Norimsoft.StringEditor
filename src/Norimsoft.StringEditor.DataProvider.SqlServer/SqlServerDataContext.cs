@@ -1,4 +1,4 @@
-﻿using System.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Norimsoft.StringEditor.DataProvider.Models;
 using Norimsoft.StringEditor.DataProvider.SqlServer.Repositories;
 

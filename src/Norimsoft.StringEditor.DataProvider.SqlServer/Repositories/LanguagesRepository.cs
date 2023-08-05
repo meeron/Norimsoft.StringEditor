@@ -1,5 +1,6 @@
-﻿using System.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Norimsoft.StringEditor.DataProvider.Models;
+using RepoDb;
 
 namespace Norimsoft.StringEditor.DataProvider.SqlServer.Repositories;
 
@@ -24,9 +25,12 @@ internal class LanguagesRepository : IRepository<Language>
         throw new NotImplementedException();
     }
 
-    public Task<Language> Insert(Language newEntity, CancellationToken ct)
+    public async Task<Language> Insert(Language newEntity, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var id = await _connection.InsertAsync(newEntity, cancellationToken: ct);
+        newEntity.Id = (int)id;
+
+        return newEntity;
     }
 
     public Task<int> Delete(int id, CancellationToken ct)
