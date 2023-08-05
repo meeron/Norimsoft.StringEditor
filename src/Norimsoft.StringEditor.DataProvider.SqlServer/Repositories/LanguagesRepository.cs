@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Norimsoft.StringEditor.DataProvider.Models;
 using RepoDb;
+using RepoDb.Enumerations;
 
 namespace Norimsoft.StringEditor.DataProvider.SqlServer.Repositories;
 
@@ -15,14 +16,19 @@ internal class LanguagesRepository : IRepository<Language>
         _options = options;
     }
 
-    public Task<IReadOnlyCollection<Language>> Get(CancellationToken ct)
+    public async Task<IReadOnlyCollection<Language>> Get(CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var items = await _connection.QueryAllAsync<Language>(
+            cancellationToken: ct,
+            orderBy: new List<OrderField> { new ("Code", Order.Ascending) });
+        return items.ToArray();
     }
 
-    public Task<Language?> Get(int id, CancellationToken ct)
+    public async Task<Language?> Get(int id, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var items = await _connection.QueryAsync<Language>(x => x.Id == id, cancellationToken: ct);
+
+        return items.SingleOrDefault();
     }
 
     public async Task<Language> Insert(Language newEntity, CancellationToken ct)
@@ -33,13 +39,9 @@ internal class LanguagesRepository : IRepository<Language>
         return newEntity;
     }
 
-    public Task<int> Delete(int id, CancellationToken ct)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<int> Delete(int id, CancellationToken ct) =>
+        _connection.DeleteAsync<Language>(x => x.Id == id, cancellationToken: ct);
 
-    public Task<int> Update(Language entity, CancellationToken ct)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<int> Update(Language entity, CancellationToken ct) =>
+        _connection.UpdateAsync(entity, x => x.Id == entity.Id, cancellationToken: ct);
 }

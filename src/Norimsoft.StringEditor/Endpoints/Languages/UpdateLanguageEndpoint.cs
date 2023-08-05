@@ -26,10 +26,7 @@ internal static class UpdateLanguageEndpoint
             entity.NativeName = body.NativeName;
         }
 
-        if (await dataContext.Languages.Update(entity, CancellationToken.None) == 0)
-        {
-            return ErrorResults.NoChange();
-        }
+        await dataContext.Languages.Update(entity, CancellationToken.None);
 
         return Results.Ok(await dataContext.Languages.Get(id, CancellationToken.None));
     }
